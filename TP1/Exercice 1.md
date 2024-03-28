@@ -1,5 +1,6 @@
 # Exercice 1
 
+
 ## Stage de BTS
 
 J'ai effectué un stage dans la start up :  Le Dénicheur Auto Pro qui était en relation avec l'entreprise de développement de logiciel web Green Juice pour la création du logiciel web.
