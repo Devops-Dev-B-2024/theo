@@ -39,23 +39,20 @@ docker cp index.html helloworld:/usr/local/apache2/htdocs/
 
 Dockerfile : 
 ```yaml
-FROM node:20-alpine
+FROM httpd:2.4
 
-WORKDIR /api
+WORKDIR /usr/local/apache2/htdocs/
 
 COPY . .
 
-RUN rm -rf node_modules
+EXPOSE 80
 
-RUN npm install --omit=dev
-ENV PORT 3000
-EXPOSE 3000
-CMD ["node", "server.js"]
+CMD ["httpd-foreground"]
 ```
 
 Création : 
 ```yaml
-docker build . -t nodejsapi
+docker build . -t my-apache-image
 ```
 
 ### b)
