@@ -1,0 +1,128 @@
+## Dockerfile
+
+Le Dockerfile est un fichier texte qui contient toutes les commandes, dans l'ordre, nécessaires pour construire une image Docker donnée. Dans ce projet, le Dockerfile est utilisé pour construire l'image pour notre service API.
+
+## docker-compose
+
+Le fichier `docker-compose.yml` est un fichier YAML qui définit les services, les réseaux et les volumes pour une application Docker. Dans ce projet, il définit trois services : `db` (une base de données MySQL), `phpmyadmin` (un outil d'administration de base de données) et `api` (notre service API).
+
+## Utilisation
+
+Pour utiliser Docker et Docker Compose dans ce projet, vous devez d'abord installer Docker et Docker Compose sur votre machine. Une fois que vous avez fait cela, vous pouvez construire et démarrer les services en utilisant la commande suivante à partir de la racine du projet :
+
+```bash
+docker-compose up --build
+```
+
+Cela construira les images pour les services si nécessaire, puis démarrera les services. Vous pouvez accéder à l'API sur `localhost:3000`, et à phpMyAdmin sur `localhost:8080`.
+
+Pour arrêter les services, vous pouvez utiliser la commande suivante :
+
+```bash
+docker-compose down
+```
+
+## Volumes
+
+Le service `db` utilise un volume Docker pour stocker les données de la base de données. Cela signifie que les données resteront disponibles même après que le service a été arrêté et redémarré. Le volume est nommé `db_data` et est défini dans la section `volumes` du fichier `docker-compose.yml`.
+
+## Liens
+
+Le service `api` est lié au service `db` sous le nom `metaCritic`. Cela signifie que l'API peut se connecter à la base de données en utilisant `metaCritic` comme nom d'hôte.
+
+theoMANEVIT31: dockerfile : # Utilisez une image de base Node.js
+FROM node:latest
+
+# Définissez le répertoire de travail dans le conteneur
+WORKDIR /usr/src/app
+
+# Copiez le fichier package.json dans le conteneur
+COPY package*.json ./
+
+# Installez les dépendances NPM
+RUN npm install
+
+# Copiez le reste des fichiers du répertoire actuel dans le conteneur
+COPY . .
+
+# Copiez le script wait-for-it.sh dans le conteneur
+COPY wait-for-it.sh /usr/wait-for-it.sh
+
+# Rendez le script wait-for-it.sh exécutable
+RUN chmod +x /usr/wait-for-it.sh
+
+# Exposez le port 3000 pour que votre application soit accessible
+EXPOSE 3000
+
+# Utilisez le script wait-for-it.sh pour attendre que la base de données soit prête avant de démarrer votre application
+CMD /usr/wait-for-it.sh db:3306 -- node server.js
+
+
+# Requête de mis en place dans docker (avoir lancé Docker au préalable) : docker compose up --build -d
+
+GitHub Copilot: # Dockerfile et docker-compose
+
+Ce projet utilise Docker pour faciliter le déploiement et la gestion des dépendances. Voici comment vous pouvez l'utiliser.
+
+## Dockerfile
+
+Le Dockerfile est un fichier texte qui contient toutes les commandes, dans l'ordre, nécessaires pour construire une image Docker donnée. Dans ce projet, le Dockerfile est utilisé pour construire l'image pour notre service API.
+
+Voici une explication de chaque étape du Dockerfile :
+
+```dockerfile
+# Utilisez une image de base Node.js
+FROM node:latest
+
+# Définissez le répertoire de travail dans le conteneur
+WORKDIR /usr/src/app
+
+# Copiez le fichier package.json dans le conteneur
+COPY package*.json ./
+
+# Installez les dépendances NPM
+RUN npm install
+
+# Copiez le reste des fichiers du répertoire actuel dans le conteneur
+COPY . .
+
+# Copiez le script wait-for-it.sh dans le conteneur
+COPY wait-for-it.sh /usr/wait-for-it.sh
+
+# Rendez le script wait-for-it.sh exécutable
+RUN chmod +x /usr/wait-for-it.sh
+
+# Exposez le port 3000 pour que votre application soit accessible
+EXPOSE 3000
+
+# Utilisez le script wait-for-it.sh pour attendre que la base de données soit prête avant de démarrer votre application
+CMD /usr/wait-for-it.sh db:3306 -- node server.js
+```
+
+## docker-compose
+
+Le fichier `docker-compose.yml` est un fichier YAML qui définit les services, les réseaux et les volumes pour une application Docker. Dans ce projet, il définit trois services : `db` (une base de données MySQL), `phpmyadmin` (un outil d'administration de base de données) et `api` (notre service API).
+
+## Utilisation
+
+Pour utiliser Docker et Docker Compose dans ce projet, vous devez d'abord installer Docker et Docker Compose sur votre machine. Une fois que vous avez fait cela, vous pouvez construire et démarrer les services en utilisant la commande suivante à partir de la racine du projet :
+
+```bash
+docker compose up --build -d
+```
+
+Cela construira les images pour les services si nécessaire, puis démarrera les services. Vous pouvez accéder à l'API sur `localhost:3000`, et à phpMyAdmin sur `localhost:8080`.
+
+Pour arrêter les services, vous pouvez utiliser la commande suivante :
+
+```bash
+docker-compose down
+```
+
+## Volumes
+
+Le service `db` utilise un volume Docker pour stocker les données de la base de données. Cela signifie que les données resteront disponibles même après que le service a été arrêté et redémarré. Le volume est nommé `db_data` et est défini dans la section `volumes` du fichier `docker-compose.yml`.
+
+## Liens
+
+Le service `api` est lié au service `db` sous le nom `metaCritic`. Cela signifie que l'API peut se connecter à la base de données en utilisant `metaCritic` comme nom d'hôte.
